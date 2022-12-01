@@ -9,9 +9,10 @@ def main(url, f):
     vacancies = driver.find_element(By.CLASS_NAME, "vacancy-serp-content").find_elements(By.CLASS_NAME, "serp-item")
     dict = {
         "company": "",
-        "speciality": "",
+        "position": "",
         "link": "",
-        "city": ""
+        "city": "",
+        "salary": ""
     }
     with open(f, "w", encoding="utf-8") as file:
         for element in vacancies:
@@ -20,13 +21,13 @@ def main(url, f):
                 salary = salary_content.find_element(By.CSS_SELECTOR,
                                                      "span[data-qa='vacancy-serp__vacancy-compensation']")\
                     .text.replace(" ", " ")
-                speciality = element.find_element(By.CLASS_NAME, "serp-item__title").text
+                position = element.find_element(By.CLASS_NAME, "serp-item__title").text
                 link = element.find_element(By.TAG_NAME, "a").get_attribute("href")
                 company = element.find_element(By.CLASS_NAME, "bloko-link_kind-tertiary").text
                 city = element.find_element(By.CLASS_NAME, "vacancy-serp-item__info").find_element(
                     By.CSS_SELECTOR, "div[data-qa='vacancy-serp__vacancy-address']").text
 
-                dict["speciality"] = speciality
+                dict["position"] = position
                 dict["link"] = link
                 dict["company"] = company
                 dict["city"] = city
