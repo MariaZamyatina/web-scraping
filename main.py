@@ -1,9 +1,14 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import json
+from logger import logger
+import os
 
-
+path = "log_file.log"
+@logger(path)
 def main(url, f):
+    if os.path.exists(path):
+        os.remove(path)
     driver = webdriver.Chrome()
     driver.get(url)
     vacancies = driver.find_element(By.CLASS_NAME, "vacancy-serp-content").find_elements(By.CLASS_NAME, "serp-item")
@@ -33,8 +38,11 @@ def main(url, f):
                 dict["city"] = city
                 dict["salary"] = salary
                 json.dump(dict, file, ensure_ascii=False, indent=4)
+    return dict
 
 
 if __name__ == '__main__':
     url = "https://spb.hh.ru/search/vacancy?text=python%2Cdjango%2Cflask&from=suggest_post&salary=&clusters=true&area=1&area=2&ored_clusters=true&enable_snippets=true"
     main(url, "data.json")
+
+
